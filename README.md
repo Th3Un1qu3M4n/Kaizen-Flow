@@ -2,6 +2,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ![image](https://github.com/Th3Un1qu3M4n/Kaizen-Flow/assets/57266167/77596f38-897b-4d56-8d6a-6b4da88fc296)
 
+![image](https://github.com/Th3Un1qu3M4n/Kaizen-Flow/assets/57266167/e4410413-3cd5-481f-932d-5f8106cbb3ea)
+
+
 
 ## Getting Started
 
