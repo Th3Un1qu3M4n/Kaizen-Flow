@@ -1,0 +1,507 @@
+.main {
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+    /* max-width: 1000px; */
+    margin-bottom: 60px;
+    /* min-height: 100vh; */
+  }
+  
+  .main h1{
+    font-family: "SF Pro Display";
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 38px;
+    letter-spacing: 0em;
+    text-align: left;
+  
+  }
+  
+  .header{
+    /* margin-top: 100px; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    /* height: 300px; */
+    /* margin-bottom: 50px; */
+  }
+  
+  .header .leftSection{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .header .leftSection h1{
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 38px;
+      letter-spacing: 0em;
+      text-align: left;
+      margin-bottom: 0px;
+  
+  }
+  
+  .header .rightSection{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  
+ .btnPrimary{
+    background-color: #292A2A;
+    color: #FFFFFF;
+    padding: 2px 16px;
+    font-family: "SF Pro Display";
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+  
+  }
+
+  
+.btnSecondary{
+    background-color: transparent;
+    color: #7F8283;
+    padding: 2px 16px;
+    font-family: "SF Pro Display";
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+  
+  }
+
+.btnSecondary.dotted{
+    border: 1px dashed #0071E3;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.sprintBtnNav{
+    /* background-color: red; */
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+/* .offCavas{
+    background-color: green;
+    width: 50vw;
+} */
+
+.offCavasBodyCloseBtn{
+    color: #FFFFFF;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 38px;
+    letter-spacing: 0em;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.offCavasBody{
+    /* background-color: red; */
+    background-color: #222424;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 100px 40px;
+
+}
+
+.offCavasBodyContent{
+    width: 100%;
+}
+
+.titleInput{
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    appearance: none;
+    outline: none;
+    font-family: SF Pro Display;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #FFFFFF; 
+
+}
+.titleInput::placeholder{
+    color: #FFFFFF;
+    font-family: SF Pro Display;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+
+
+}
+
+.levelSelectWrapper{
+    /* background-color: red; */
+    margin-top: 8px;
+    color: #FFFFFF;
+    font-family: SF Pro Display;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.levelInput {
+    background-color: #333636;
+    padding: 3px 10px;
+    border-radius: 5px;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+}
+
+.dateColorPicker{
+    margin-top: 12px;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-family: SF Pro Display;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    /* text-align: left; */
+
+}
+
+.dateWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+}
+
+.datePickerWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.datePicker{
+    background-color: #333636;
+    padding: 3px 10px;
+    border-radius: 5px;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+    appearance: none;
+}
+.projectDescriptionTextArea {
+    background: #333636;
+    min-height: 40px;
+    border-radius: 10px;
+    appearance: none;
+    outline: none;
+    border: none;
+    width: 100%;
+    color: #FFFFFF;
+    padding: 5px 20px;
+}
+
+
+.todoHeading{
+    font-family: SF Pro Display;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #FFFFFF;
+
+}
+
+.colorWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.colorPickerTitle{
+    font-family: SF Pro Display;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: right;
+    color: #FFFFFF;
+
+}
+
+.colorPickerInput{
+    background-color: #333636;
+    /* padding: 3px 10px; */
+    border-radius: 50%;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+
+}
+
+.todoWrapper {
+    color: #FFFFFF;
+    /* background-color: red; */
+}
+
+.tag{
+    margin-top: 15px;
+    background-color: #292A2A;
+    padding: 8px;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.tag p {
+    font-family: SF Pro Display;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 12px;
+    letter-spacing: 0em;
+    margin-bottom: 0px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.createSprint{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.content{
+    /* background-color: ; */
+    width: 100%;
+}
+
+.calenderStrip{
+    display: flex;
+    /* background-color: red; */
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow-x: scroll;
+    /* gap: 10px; */
+
+}
+
+.calenderStrip::-webkit-scrollbar {
+    display: none;
+}
+
+.monthWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.month{
+    padding: 10px 30px;
+}
+
+.daysWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    background-color: #333636;
+    border-radius: 10px;
+    margin-right: 5px;
+}
+
+.sprintsPending{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 0px 0px;
+    width: 100%;
+    /* background-color: #333636; */
+    /* border-radius: 10px; */
+    min-height: 40vh;
+    /* padding-bottom: 20px; */
+    /* overflow-y: scroll; */
+    
+}
+
+.sprintsPending::-webkit-scrollbar {
+    display: none;
+}
+
+.day{
+    width: 35px;
+    height: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* padding: 5px; */
+    /* background-color: green; */
+}
+
+.day.activeDate{
+    background-color: #7A00F3;
+    border-radius: 50%;
+    /* padding: 5px; */
+}
+
+.column{
+    width: 35px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border-right: #292A2A 1px solid;
+    /* background-color: Red; */
+    height: 100% !important;
+    min-height: 40vh;
+    
+    /* position: relative; */
+}
+
+.completed.completed{
+    min-height: 25vh;
+}
+
+.sprintsCompleted{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: #222424;
+    /* background-color: green; */
+    gap: 10px;
+    width: 100%;
+    padding: 0px 0px;
+    /* z-index: 01; */
+    /* background-color: #333636; */
+    /* border-radius: 10px; */
+    min-height: 25vh;
+    /* overflow-y: scroll; */
+
+}
+
+.sprintsCompleted::-webkit-scrollbar {
+    display: none;
+}
+
+.sprint{
+    margin-top: 10px;
+    background-color: #A05700;
+    position: absolute;
+    left: 0;
+    padding: 20px;
+    white-space: nowrap;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.sprint.completedSprint{
+    background-color: transparent;
+    border: 1px solid #1C8102;
+}
+
+.levelsCompletedContainer{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.levelCompletedWrapper {
+    width: 100%;
+    max-width: 543px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 12px;
+    border: 2px solid #1C8102;
+    border-radius: 10px;
+}
+
+.levelCompleteTitle {
+    font-family: SF Pro Display;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #FFFFFF;
+}
