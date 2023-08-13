@@ -4,6 +4,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ![image](https://github.com/Th3Un1qu3M4n/Kaizen-Flow/assets/57266167/e4410413-3cd5-481f-932d-5f8106cbb3ea)
 
+![image](https://github.com/Th3Un1qu3M4n/Kaizen-Flow/assets/57266167/80beeae7-d61f-4a29-8334-1cbb24db3931)
+
+
 
 
 ## Getting Started
