@@ -1,5 +1,8 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+![image](https://github.com/Th3Un1qu3M4n/Kaizen-Flow/assets/57266167/77596f38-897b-4d56-8d6a-6b4da88fc296)
+
+
 ## Getting Started
 
 First, run the development server:
