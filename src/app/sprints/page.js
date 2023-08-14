@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image'
 import styles from './sprints.module.css'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CheckItem, NestedChecklist } from '../components/nestedCheckBoxes';
 
 
@@ -104,8 +104,8 @@ export default function Home() {
       name: 'Sprint #1 - Create Basic Layout for Kaizen Flow',
       description: 'Create the basic layout for the Kaizen Flow application',
       level: "2",
-      startDate: '1/12/2023',
-      endDate: '1/18/2023',
+      startDate: '8/12/2023',
+      endDate: '8/18/2023',
       color: '#A05700',
       duration: 6,
       isCompleted: false
@@ -122,6 +122,12 @@ export default function Home() {
   const [projectStartDate, setProjectStartDate] = useState('');
   const [projectEndDate, setProjecEndDate] = useState('');
   const [projectColor, setProjectColor] = useState('');
+  const [selectedProject, setSelectedProject] = useState();
+  const currentMonthRef = useRef(null);
+  const offCanvasRef = useRef(null);
+  const currentDate = new Date(); // Get the current date
+  const currentMonthIndex = currentDate.getMonth(); // Get the current month index (0-11)
+
 
   // const [projectReward, setProjectReward] = useState('');
   // const [isConfirmed, setIsConfirmed] = useState(false);
@@ -142,6 +148,8 @@ export default function Home() {
     // Here is where you would call an onSelect callback with these values
   }, [checklistData])
 
+  
+
   // console.log("projectName", projectName)
   // console.log("projectDescription", projectDescription)
   // console.log("isConfirmed", isConfirmed)
@@ -149,6 +157,19 @@ export default function Home() {
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
+
+    
+  useEffect(() => {
+    // Scroll to the current month when the component mounts
+    if (currentMonthRef.current) {
+      currentMonthRef.current.scrollIntoView({
+        behavior: 'smooth', // You can use 'auto' for instant scrolling
+        block: 'center', // 'start', 'center', 'end', or 'nearest'
+        inline: 'center', // 'start', 'center', 'end', or 'nearest'
+      });
+    }
+  }, []); // The empty dependency array ensures the effect runs only on mount
+
 
 
 
@@ -276,7 +297,11 @@ export default function Home() {
       duration: days,
       isCompleted: false
     }
-    setProjects([...projects, newProject])
+    if(selectedProject){
+      updateProjectDetails(newProject)
+    }else{
+      setProjects([...projects, newProject])
+    }
   }
 
 
@@ -284,8 +309,48 @@ export default function Home() {
     console.log("projects", projects)
   }, [projects])
 
+  
+  // setSelectedProjectDetails
+  const completeProjectAndUpdatePostions = (project) => {
+    setSelectedProject(project)
+    setProjectName(project.name)
+    setProjectDescription(project.description)
+    setProjectLevel(project.level)
+    setProjectStartDate(project.startDate)
+    setProjecEndDate(project.endDate)
+    setProjectColor(project.color)
+    // openOffCanvas()
+  }
 
-  const completeProjectAndUpdatePostions = async (project) => {
+  const clearFormDetails = () => {
+    setSelectedProject(null)
+    setProjectName('')
+    setProjectDescription('')
+    setProjectLevel('')
+    setProjectStartDate('')
+    setProjecEndDate('')
+    setProjectColor('')
+  }
+
+  // update all details of selectedProject
+  const updateProjectDetails = (newProject) => {
+    const updatedProjects = projects.map((project) => {
+      if(project.position === selectedProject.position){
+        project.name = newProject.name
+        project.description = newProject.description
+        project.level = newProject.level
+        project.startDate = newProject.startDate
+        project.endDate = newProject.endDate
+        project.color = newProject.color
+        project.duration = newProject.duration
+      }
+      console.log("Updating Project ", newProject)
+      return project
+    })
+    setProjects(updatedProjects)
+  }
+
+  const completeProjectAndUpdatePostions1 = async (project) => {
     console.log("project", project)
     const currPostion = project.position;
     const completedPostion = completedProjects.length>0?completedProjects[completedProjects.length-1].position+1:1
@@ -307,11 +372,24 @@ export default function Home() {
     setCompletedProjects([...completedProjects, completedProject])
   }
 
+  console.log("Selected Project ", selectedProject)
+
+  // function openOffCanvas() {
+  //   const offCanvasElement = offCanvasRef.current;
+
+  //   // offCanvasRef.current.classList.toggle('show');
+  
+  //   if (offCanvasElement) {
+  //     const offCanvas = new bootstrap.Offcanvas(offCanvasElement); // Create an Offcanvas instance
+  //     offCanvasElement.show(); // Open the off-canvas
+  //   }
+  // }
+
     
   return (
     <main className={styles.main}>
 
-      <div className={`offcanvas offcanvas-end w-50 ${styles.offCavas}`} tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+      <div ref={offCanvasRef} className={`offcanvas offcanvas-end w-50 ${styles.offCavas}`} tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
           <div
             className={`${styles.offCavasBodyCloseBtn}`}
             data-bs-dismiss="offcanvas"
@@ -319,13 +397,14 @@ export default function Home() {
           > X </div>
         <div className={`offcanvas-body ${styles.offCavasBody}`}>
           <div className={`${styles.offCavasBodyContent}`}>
+            {selectedProject&&<h1 style={{color: "white"}}>Edit Sprint</h1>}
             <input value={projectName} onChange={(e)=>setProjectName(e.target.value)} className={`${styles.titleInput}`}  type='text' placeholder='🎯 Sprint #1 - Create Basic Layout for Kaizen Flow' />
               
             {/* </h1> */}
             {/* select input to select level */}
             <div className={`${styles.levelSelectWrapper}`}>
               <label className={`${styles.levelInputTitle}`} htmlFor='level' >Which Level</label>
-              <select onChange={(e)=>setProjectLevel(e.target.value)} className={`${styles.levelInput}`} name="level" id="level">
+              <select value={projectLevel} onChange={(e)=>setProjectLevel(e.target.value)} className={`${styles.levelInput}`} name="level" id="level">
                 <option selected disabled>Select Level</option>
                 <option value="1">Level 1</option>
                 <option value="2">Level 2</option>
@@ -347,18 +426,18 @@ export default function Home() {
               </div>
               <div className={`${styles.datePickerWrapper}`}>
                 <div className={`${styles.datePickerTitle}`}>Start Date</div>
-                <input onChange={(e)=>setProjectStartDate(e.target.value)} className={`${styles.datePicker}`} type="date" id="date" name="date" />
+                <input value={projectStartDate?new Date(projectStartDate)?.toISOString()?.substr(0, 10):""} onChange={(e)=>setProjectStartDate(e.target.value)} className={`${styles.datePicker}`} type="date" id="date" name="date" />
               </div>
               <div className={`${styles.datePickerWrapper}`}>
                 <div className={`${styles.datePickerTitle}`}>End Date</div>
-                <input onChange={(e)=>setProjecEndDate(e.target.value)} className={`${styles.datePicker}`} type="date" id="date" name="date" />
+                <input value={projectEndDate?new Date(projectEndDate)?.toISOString()?.substr(0, 10):""} onChange={(e)=>setProjecEndDate(e.target.value)} className={`${styles.datePicker}`} type="date" id="date" name="date" />
               </div>
             </div>
             <div className={`${styles.colorWrapper}`}>
               <Image src="/images/colorIcon.svg" alt="color icon" width={24} height={24} />
               <div className={`${styles.colorPickerTitle}`}>Color</div>
               {/* input color picker */}
-              <input onChange={(e)=>setProjectColor(e.target.value)} className={`${styles.colorPickerInput}`} type="color" id="color" name="color" />
+              <input value={projectColor} onChange={(e)=>setProjectColor(e.target.value)} className={`${styles.colorPickerInput}`} type="color" id="color" name="color" />
 
 
             </div>
@@ -408,7 +487,7 @@ export default function Home() {
         </div>
       </header>
       <div className={`${styles.sprintBtnNav}`}>
-        <button className={`${styles.btnSecondary} ${styles.dotted}`} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+        <button className={`${styles.btnSecondary} ${styles.dotted}`} onClick={()=>clearFormDetails()} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
           Add New Sprint
           <Image
             src="/images/plusIcon.svg"
@@ -432,7 +511,9 @@ export default function Home() {
 
           {MonthsArrayWithDays.map((month, monthIndex) => {
             return (
-              <div key={monthIndex} className={styles.monthWrapper}>
+              <div key={monthIndex}
+                  ref={monthIndex === currentMonthIndex ? currentMonthRef : null} // Attach ref to the current month's element
+                  className={styles.monthWrapper}>
                 <div className={styles.month}>{month.month} 2023</div>
                 <div className={styles.daysWrapper}>
                   {[...Array(month.days).keys()].map((day, daysIndex) => {
@@ -481,7 +562,7 @@ export default function Home() {
                               <>
                               {project && !project.isCompleted && (
                                 <div className={styles.projectWrapper} style={{position: 'relative', minHeight: "100px", marginTop: `calc(100px * ${project.position-1} + 20px)`}}>
-                                  <div className={styles.sprint} onClick={()=>completeProjectAndUpdatePostions(project)} style={{backgroundColor: project.color, width: `calc(47px * ${project.duration})`}}>
+                                  <div className={styles.sprint} onClick={()=>completeProjectAndUpdatePostions(project)} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style={{backgroundColor: project.color, width: `calc(47px * ${project.duration})`}}>
                                     <div className={styles.sprintTitle}>{project.name}</div>
                                     <div className={styles.sprintDescription}>
                                       Level: {project.level}
