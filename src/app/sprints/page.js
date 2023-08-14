@@ -426,7 +426,10 @@ export default function Home() {
 
       <div className={styles.content}>
         {/* calender strip */}
+        <Image className={styles.inprogressImage} src="/images/inprogress.png" alt="calendar icon" width={16} height={100} />
+        <Image className={styles.completedImage} src="/images/completed.png" alt="calendar icon" width={20} height={100} />
         <div className={styles.calenderStrip}>
+
           {MonthsArrayWithDays.map((month, monthIndex) => {
             return (
               <div key={monthIndex} className={styles.monthWrapper}>
