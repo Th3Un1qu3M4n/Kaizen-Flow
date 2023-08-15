@@ -233,9 +233,82 @@ export function CheckItem({
   node,
   setData
 }) {
+
+  const [newNodeLabel, setNewNodeLabel] = useState(""); // State for new node label
+
+  const addNewNode = () => {
+    if (newNodeLabel.trim() !== "") {
+      const newNode = {
+        label: newNodeLabel,
+        value: newNodeLabel,
+        isSelected: false,
+        isDisabled: false,
+        isCollapsed: false,
+        children: []
+      };
+
+      setData((data) => {
+        const newData = { ...data };
+        const parentNode = findParentNode(newData.children, node.value);
+        
+        if (parentNode) {
+          parentNode.children.push(newNode);
+        }
+        
+        setNewNodeLabel(""); // Clear input
+        return newData;
+      });
+    }
+  };
+
+  const removeNode = () => {
+    setData((data) => {
+      const newData = { ...data };
+      removeNodeRecursively(newData.children, node.value.trim());
+      return newData;
+    });
+  };
+  
+  const removeNodeRecursively = (children, targetValue) => {
+    for (const child of children) {
+      if (child.value.trim() === targetValue) {
+        const indexToRemove = children.indexOf(child);
+        if (indexToRemove !== -1) {
+          children.splice(indexToRemove, 1);
+        }
+        return true; // Found and removed node
+      }
+  
+      if (child.children.length > 0) {
+        const removed = removeNodeRecursively(child.children, targetValue);
+        if (removed) {
+          return true; // Node found and removed in children
+        }
+      }
+    }
+    return false; // Node not found in children
+  };
+
+  // Recursively find the parent node
+  const findParentNode = (children, targetValue) => {
+    for (const child of children) {
+      if (child.value === targetValue) {
+        return child;
+      }
+      if (child.children.length > 0) {
+        const parent = findParentNode(child.children, targetValue);
+        if (parent) {
+          return parent;
+        }
+      }
+    }
+    return null;
+  };
+
   return (
-    <div style={{ width: "100%" }}>
+    <div key={"wrapper_"+node.value} style={{ width: "100%" }}>
       <div
+        key={"inner_1_"+node.value}
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -243,10 +316,18 @@ export function CheckItem({
           // border: "1px solid red"
         }}
       >
-        <label style={{ color: node.isDisabled ? "gray" : "white" }}>
+        <label style={{ color: node.isDisabled ? "gray" : "white", display: 'flex', flexDirection:"row", justifyContent:"center", alignItems:"center" }}>
         <input
             type="checkbox"
-            style={{accentColor: "green", backgroundColor:"transparent"}}
+            // style={node.isHeading?{accentColor: "green", background:"none", backgroundColor:"transparent", width:"20px", height:"20px", border:"1px solid white", borderRadius:"5px"}:{ width:"15px", height:"15px", border:"1px solid white", borderRadius:"5px"}}
+            style={{
+              accentColor: "green",
+              background: "transparent", // Set the background to transparent
+              width: node.isHeading ? "20px" : "15px",
+              height: node.isHeading ? "20px" : "15px",
+              border: "1px solid white",
+              borderRadius: "5px"
+            }}
             disabled={node.isDisabled}
             onChange={() => toggleAllChildren(node.value, setData)}
             checked={isAllSelected(node)}
@@ -280,16 +361,22 @@ export function CheckItem({
     
               }}>{node.label}</span>
                 </label>
-        {/* <div>
+        <div>
+        <div>
           <input
-            type="checkbox"
-            disabled={node.isDisabled}
-            onChange={() => toggleAllChildren(node.value, setData)}
-            checked={isAllSelected(node)}
+            type="text"
+            value={newNodeLabel}
+            onChange={(e) => setNewNodeLabel(e.target.value)}
+            placeholder="Enter Subtask label"
+            style={{ marginRight: "5px", backgroundColor: "#333636", color: "white", border: "none", padding: "5px", borderRadius: "5px", fontSize: node.isHeading ? "15px" : "10px", }}
           />
-        </div> */}
+          <button style={{border: "1px solid #7A00F3", backgroundColor: "transparent", fontSize: "12px", fontWeight:"700", color:"#FFFFFF", padding: "8px"}} onClick={addNewNode}>Subtask +</button>
+          {node.value!="BigGoal"&&<button style={{marginLeft: "10px",border: "1px solid #7A00F3", backgroundColor: "#7A00F3", fontSize: "12px", fontWeight:"700", color:"#FFFFFF", padding: "8px"}} onClick={removeNode}> - </button>}
+        </div>
+           
+        </div>
       </div>
-      <div style={{ paddingLeft: "16px", paddingTop: "8px" }}>
+      <div key={"inner_2_"+node.value} style={{ paddingLeft: "16px", paddingTop: "8px" }}>
         <NestedChecklist data={node.children} setData={setData} />
       </div>
     </div>
@@ -309,7 +396,7 @@ export function NestedChecklist({
   return (
     <>
       {data.map((node) => (
-        <CheckItem node={node} setData={setData} />
+        <CheckItem key={node.value} node={node} setData={setData} />
       ))}
     </>
   );

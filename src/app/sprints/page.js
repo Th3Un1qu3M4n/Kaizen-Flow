@@ -5,29 +5,65 @@ import { useEffect, useRef, useState } from 'react';
 import { CheckItem, NestedChecklist } from '../components/nestedCheckBoxes';
 
 
-function isAllSelected(node) {
-  let allSelected = true;
 
-  let flat = getFlattedChildren(node);
 
-  flat.forEach((child) => {
-    if (!child.isSelected) {
-      allSelected = false;
+export default function Home() {
+
+  const data = {
+    value: "root",
+    label: "root",
+    isSelected: false,
+    isDisabled: false,
+    isCollapsed: false,
+    children: [
+      {
+        label: "Big Goal of the week",
+        value: "BigGoal",
+        isSelected: false,
+        isDisabled: false,
+        isCollapsed: false,
+        isHeading: true,
+        children: [
+          
+        ]
+      }
+    ]
+  };
+
+
+  const tempProjects = [
+    {
+      position: 1,
+      name: 'Sprint #1 - Create Basic Layout for Kaizen Flow',
+      description: 'Create the basic layout for the Kaizen Flow application',
+      level: "2",
+      startDate: '8/12/2023',
+      endDate: '8/18/2023',
+      color: '#A05700',
+      duration: 6,
+      checklist: {...data},
+      isCompleted: false
     }
-  });
+    
+]
 
-  return allSelected;
-}
+const tempProjects2 = [
+  {
+    position: 1,
+    name: 'Sprint #x - Create Basic Layout for Kaizen Flow',
+    description: 'Create the basic layout for the Kaizen Flow application',
+    level: "2",
+    startDate: '8/12/2023',
+    endDate: '8/18/2023',
+    color: '#A05700',
+    duration: 6,
+    checklist: {...data},
+    isCompleted: true
+  }
+  
+]
 
-function getFlattedChildren(node) {
-  let flat = [node];
-  node.children.forEach((child) => {
-    flat = [...flat, ...getFlattedChildren(child)];
-  });
-  return flat;
-}
-
-const data = {
+const data2 = {
   value: "root",
   label: "root",
   isSelected: false,
@@ -97,25 +133,9 @@ const data = {
   ]
 };
 
-export default function Home() {
-  const tempProjects = [
-    {
-      position: 1,
-      name: 'Sprint #1 - Create Basic Layout for Kaizen Flow',
-      description: 'Create the basic layout for the Kaizen Flow application',
-      level: "2",
-      startDate: '8/12/2023',
-      endDate: '8/18/2023',
-      color: '#A05700',
-      duration: 6,
-      isCompleted: false
-    }
-    
-]
 
-
-  const [projects, setProjects] = useState(tempProjects);
-  const [completedProjects, setCompletedProjects] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [completedProjects, setCompletedProjects] = useState([...tempProjects2]);
   const [projectName, setProjectName] = useState('');
   const [projectLevel, setProjectLevel] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
@@ -133,34 +153,8 @@ export default function Home() {
   // const [isConfirmed, setIsConfirmed] = useState(false);
 
   const [checklistData, setChecklistData] = useState(data);
-  const allSelected = isAllSelected(checklistData);
-  console.log("allSelected: ", allSelected);
-
-  useEffect(() => {
-    const nodes = getFlattedChildren(checklistData);
-    const selected = []
-    nodes.forEach((node) => {
-      if (node.isSelected) {
-        selected.push(node.value);
-      }
-    })
-    console.log('These are the selected nodes: ', selected)
-    // Here is where you would call an onSelect callback with these values
-  }, [checklistData])
-
-  
-
-  // console.log("projectName", projectName)
-  // console.log("projectDescription", projectDescription)
-  // console.log("isConfirmed", isConfirmed)
-
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
-  }, []);
-
-    
-  useEffect(() => {
-    // Scroll to the current month when the component mounts
     if (currentMonthRef.current) {
       currentMonthRef.current.scrollIntoView({
         behavior: 'smooth', // You can use 'auto' for instant scrolling
@@ -168,9 +162,7 @@ export default function Home() {
         inline: 'center', // 'start', 'center', 'end', or 'nearest'
       });
     }
-  }, []); // The empty dependency array ensures the effect runs only on mount
-
-
+  }, []);
 
 
   const MonthsArrayWithDays = [
@@ -244,6 +236,7 @@ export default function Home() {
     console.log("projectStartDate", projectStartDate)
     console.log("projectEndDate", projectEndDate)
     console.log("projectColer", projectColor)
+    console.log("projectTasks", checklistData)
     if(!projectName){
       alert('Please enter a project name')
       return;
@@ -284,7 +277,8 @@ export default function Home() {
       return;
     }
     
-    console.log("duration", days,)
+    console.log("duration", days, checklistData.children[0].isSelected)
+    // if
     const newProject = {
       position:  projects.length>0?projects[projects.length-1].position+1:1,
       // position: projects[projects.length - 1].position + 1,
@@ -295,7 +289,8 @@ export default function Home() {
       endDate: projectEndDateFormatted,
       color: projectColor,
       duration: days,
-      isCompleted: false
+      checklist: checklistData,
+      isCompleted: checklistData.children[0].isSelected
     }
     if(selectedProject){
       updateProjectDetails(newProject)
@@ -319,6 +314,7 @@ export default function Home() {
     setProjectStartDate(project.startDate)
     setProjecEndDate(project.endDate)
     setProjectColor(project.color)
+    setChecklistData(project.checklist)
     // openOffCanvas()
   }
 
@@ -330,10 +326,15 @@ export default function Home() {
     setProjectStartDate('')
     setProjecEndDate('')
     setProjectColor('')
+    setChecklistData(data)
   }
 
   // update all details of selectedProject
   const updateProjectDetails = (newProject) => {
+    if(newProject.isCompleted){
+      completeProjectAndUpdatePostions1({...newProject, position: selectedProject.position})
+      return;
+    }
     const updatedProjects = projects.map((project) => {
       if(project.position === selectedProject.position){
         project.name = newProject.name
@@ -343,6 +344,7 @@ export default function Home() {
         project.endDate = newProject.endDate
         project.color = newProject.color
         project.duration = newProject.duration
+        project.checklist = newProject.checklist
       }
       console.log("Updating Project ", newProject)
       return project
@@ -351,7 +353,7 @@ export default function Home() {
   }
 
   const completeProjectAndUpdatePostions1 = async (project) => {
-    console.log("project", project)
+    console.log("completing project", project)
     const currPostion = project.position;
     const completedPostion = completedProjects.length>0?completedProjects[completedProjects.length-1].position+1:1
     console.log("completedPostion", completedPostion, completedProjects.length>0, completedProjects, completedProjects[completedProjects.length-1])
@@ -368,6 +370,7 @@ export default function Home() {
       return project
     })
     console.log("updatedProjects", updatedProjects)
+    console.log("completedProject", completedProject, completedProjects)
     setProjects(newUpdatedProjects)
     setCompletedProjects([...completedProjects, completedProject])
   }
@@ -389,7 +392,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
 
-      <div ref={offCanvasRef} className={`offcanvas offcanvas-end w-50 ${styles.offCavas}`} tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+      <div ref={offCanvasRef} className={`offcanvas offcanvas-end w-50 ${styles.offCavas}`} tabIndex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
           <div
             className={`${styles.offCavasBodyCloseBtn}`}
             data-bs-dismiss="offcanvas"
@@ -404,7 +407,7 @@ export default function Home() {
             {/* select input to select level */}
             <div className={`${styles.levelSelectWrapper}`}>
               <label className={`${styles.levelInputTitle}`} htmlFor='level' >Which Level</label>
-              <select value={projectLevel} onChange={(e)=>setProjectLevel(e.target.value)} className={`${styles.levelInput}`} name="level" id="level">
+              <select value={selectedProject?projectLevel:null} onChange={(e)=>setProjectLevel(e.target.value)} className={`${styles.levelInput}`} name="level" id="level">
                 <option selected disabled>Select Level</option>
                 <option value="1">Level 1</option>
                 <option value="2">Level 2</option>
@@ -452,9 +455,9 @@ export default function Home() {
             </h2>
 
             <div className={`${styles.todoWrapper}`}>
-
+            {console.log(selectedProject?.checklist)}
             <NestedChecklist
-                data={checklistData.children}
+                data={selectedProject?.checklist?selectedProject.checklist.children :checklistData.children}
                 setData={setChecklistData}
               />
             </div>
@@ -608,7 +611,7 @@ export default function Home() {
 
                             return(
                               <>
-                              {project && !project.isCompleted && (
+                              {project && project.isCompleted && (
                                 <div className={styles.projectWrapper} style={{position: 'relative', minHeight: "100px", marginTop: `calc(100px * ${project.position-1} + 20px)`}}>
                                   <div className={`${styles.sprint} ${styles.completedSprint}`} style={{ width: `calc(47px * ${project.duration})`}}>
                                     <div className={styles.sprintTitle}>{project.name}</div>
