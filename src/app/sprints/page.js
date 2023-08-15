@@ -522,16 +522,16 @@ const data2 = {
                   {[...Array(month.days).keys()].map((day, daysIndex) => {
                     const monthNumber = monthIndex + 1;
                     const dayNumber = daysIndex + 1;
-                    const date = `${monthNumber}/${dayNumber}/2023`;
+                    const date = `${monthNumber}/${dayNumber+1}/2023`;
                     
                     let isActiveDate = false
                     if( date === new Date().toLocaleDateString('en-us')){
                       isActiveDate = true
                     }
-                    
+                    console.log("Month - "+monthIndex+" - ", " Day - "+daysIndex+" - ", date)
                     return (
                       <div key={daysIndex} className={`${styles.day} ${isActiveDate?styles.activeDate:""}`}>
-                        {day}
+                        {day+1}
                       </div>
                     );
                   })}
