@@ -490,8 +490,8 @@ const data2 = {
         </div>
       </header>
       <div className={`${styles.sprintBtnNav}`}>
-        <button className={`${styles.btnSecondary} ${styles.dotted}`} onClick={()=>clearFormDetails()} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-          Add New Sprint
+        <button className={`${styles.btnSecondary}`} onClick={()=>clearFormDetails()} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+          <span>Add New Sprint</span>
           <Image
             src="/images/plusIcon.svg"
             alt="Sprints add icon"
@@ -499,7 +499,7 @@ const data2 = {
             height={24}
           />
         </button>
-        <button className={`${styles.btnPrimary}`}>Monthly</button>
+        {/* <button className={`${styles.btnPrimary}`}>Monthly</button> */}
       </div>
 
       {/* <button class="btn btn-primary" >Toggle right offcanvas</button> */}
@@ -508,158 +508,172 @@ const data2 = {
 
       <div className={styles.content}>
         {/* calender strip */}
-        <Image className={styles.inprogressImage} src="/images/inprogress.png" alt="calendar icon" width={16} height={100} />
-        <Image className={styles.completedImage} src="/images/completed.png" alt="calendar icon" width={20} height={100} />
-        <div className={styles.calenderStrip}>
 
-          {MonthsArrayWithDays.map((month, monthIndex) => {
-            return (
-              <div key={monthIndex}
-                  ref={monthIndex === currentMonthIndex ? currentMonthRef : null} // Attach ref to the current month's element
-                  className={styles.monthWrapper}>
-                <div className={styles.month}>{month.month} 2023</div>
-                <div className={styles.daysWrapper}>
-                  {[...Array(month.days).keys()].map((day, daysIndex) => {
-                    const monthNumber = monthIndex + 1;
-                    const dayNumber = daysIndex + 1;
-                    const date = `${monthNumber}/${dayNumber+1}/2023`;
-                    
-                    let isActiveDate = false
-                    if( date === new Date().toLocaleDateString('en-us')){
-                      isActiveDate = true
-                    }
-                    console.log("Month - "+monthIndex+" - ", " Day - "+daysIndex+" - ", date)
-                    return (
-                      <div key={daysIndex} className={`${styles.day} ${isActiveDate?styles.activeDate:""}`}>
-                        {day+1}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className={styles.sprintsPending}>
-                  <div className={styles.column}>
-                  </div>
-                    {[...Array(month.days).keys()].map((day, daysIndex) => {
-                      let foundProjectsIndex = 0;
-                        const monthNumber = monthIndex + 1;
-                        const dayNumber = daysIndex + 1;
-                        const date = `${monthNumber}/${dayNumber}/2023`;
-                        let foundProjects = []
-                        // if(date === '8/12/2023'){
-                          // console.log("date", date)
-                          foundProjects = projects.filter((project) =>{
-                            return project.startDate == date
-                          });
-                          if(foundProjects.length > 0){
-                            // foundProjectsIndex += foundProjects.length
-                            // console.log("foundProjects", foundProjects)
-                          }
-                        // }
+        <div>
+          <div className={styles.innerContainer}>
+            <div>
+              <div className={styles.inprogressImage}>
+                <Image  src="/images/inprogress2.png" alt="calendar icon" width={16} height={100} />
 
-                        
-                      return (
-                        <div key={daysIndex} className={styles.column}>
-                          {foundProjects.map((project, projectIndex) => {
-
-                            return(
-                              <>
-                              {project && !project.isCompleted && (
-                                <div className={styles.projectWrapper} style={{position: 'relative', minHeight: "100px", marginTop: `calc(100px * ${project.position-1} + 20px)`}}>
-                                  <div className={styles.sprint} onClick={()=>completeProjectAndUpdatePostions(project)} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style={{backgroundColor: project.color, width: `calc(47px * ${project.duration})`}}>
-                                    <div className={styles.sprintTitle}>{project.name}</div>
-                                    <div className={styles.sprintDescription}>
-                                      Level: {project.level}
-                                      - 
-                                      {new Date(project.startDate).getDate()+" "+MonthsArrayWithDays[new Date(project.startDate).getMonth()].month }
-                                      { " to "}
-                                      {new Date(project.endDate).getDate()+" "+MonthsArrayWithDays[new Date(project.endDate).getMonth()].month }
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-                              </>
-                          )})}
-                          
-                        </div>
-                      );
-                    })}
-                  </div>
-                <div className={styles.sprintsCompleted}>
-                    <div className={`${styles.column} ${styles.completed}`}>
-                    </div>
-                    {[...Array(month.days).keys()].map((day, daysIndex) => {
-                      let foundProjectsIndex = 0;
-                        const monthNumber = monthIndex + 1;
-                        const dayNumber = daysIndex + 1;
-                        const date = `${monthNumber}/${dayNumber}/2023`;
-                        let foundProjects = []
-                        // if(date === '8/12/2023'){
-                          // console.log("date", date)
-                          foundProjects = completedProjects.filter((project) =>{
-                            return project.startDate == date
-                          });
-                          if(foundProjects.length > 0){
-                            // foundProjectsIndex += foundProjects.length
-                            // console.log("foundProjects", foundProjects)
-                          }
-                        // }
-
-                        
-                      return (
-                        <div key={daysIndex} className={`${styles.column} ${styles.completed}`}>
-                          {foundProjects.map((project, projectIndex) => {
-
-                            return(
-                              <>
-                              {project && project.isCompleted && (
-                                <div className={styles.projectWrapper} style={{position: 'relative', minHeight: "100px", marginTop: `calc(100px * ${project.position-1} + 20px)`}}>
-                                  <div className={`${styles.sprint} ${styles.completedSprint}`} style={{ width: `calc(47px * ${project.duration})`}}>
-                                    <div className={styles.sprintTitle}>{project.name}</div>
-                                    <div className={styles.sprintDescription}>
-                                      Level: {project.level}
-                                      - 
-                                      {new Date(project.startDate).getDate()+" "+MonthsArrayWithDays[new Date(project.startDate).getMonth()].month }
-                                      { " to "}
-                                      {new Date(project.endDate).getDate()+" "+MonthsArrayWithDays[new Date(project.endDate).getMonth()].month }
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-                              </>
-                          )})}
-                          
-                        </div>
-                      );
-                    })}
-                </div>
               </div>
-            );
-          })}
-        </div>
+              <div className={styles.completedImage}>
+                <Image src="/images/completed2.png" alt="calendar icon" width={16} height={100} />
 
-        <div className={`${styles.levelsCompletedContainer}`}>
-           { [...Array(10).keys()].map((level, index) => {
-            let isLevelCompleted = false;
-            const foundProjects = projects.find((project) =>{
-              return project.level == level
-            });
-            if(!foundProjects){
-              const foundCompletedProjects = completedProjects.find((project) =>{
+              </div>
+            </div>
+            <div className={styles.calenderStrip}>
+
+              {MonthsArrayWithDays.map((month, monthIndex) => {
+                return (
+                  <div key={monthIndex}
+                      ref={monthIndex === currentMonthIndex ? currentMonthRef : null} // Attach ref to the current month's element
+                      className={styles.monthWrapper}>
+                    <div className={styles.month}>{month.month}</div>
+                    <div className={styles.daysWrapper}>
+                      {[...Array(month.days).keys()].map((day, daysIndex) => {
+                        const monthNumber = monthIndex + 1;
+                        const dayNumber = daysIndex + 1;
+                        const date = `${monthNumber}/${dayNumber+1}/2023`;
+                        
+                        let isActiveDate = false
+                        if( date === new Date().toLocaleDateString('en-us')){
+                          isActiveDate = true
+                        }
+                        console.log("Month - "+monthIndex+" - ", " Day - "+daysIndex+" - ", date)
+                        return (
+                          <div key={daysIndex} className={`${styles.day} ${isActiveDate?styles.activeDate:""}`}>
+                            {day+1}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className={styles.sprintsPending}>
+                      <div className={styles.column}>
+                      </div>
+                        {[...Array(month.days).keys()].map((day, daysIndex) => {
+                          let foundProjectsIndex = 0;
+                            const monthNumber = monthIndex + 1;
+                            const dayNumber = daysIndex + 1;
+                            const date = `${monthNumber}/${dayNumber}/2023`;
+                            let foundProjects = []
+                            // if(date === '8/12/2023'){
+                              // console.log("date", date)
+                              foundProjects = projects.filter((project) =>{
+                                return project.startDate == date
+                              });
+                              if(foundProjects.length > 0){
+                                // foundProjectsIndex += foundProjects.length
+                                // console.log("foundProjects", foundProjects)
+                              }
+                            // }
+
+                            
+                          return (
+                            <div key={daysIndex} className={styles.column}>
+                              {foundProjects.map((project, projectIndex) => {
+
+                                return(
+                                  <>
+                                  {project && !project.isCompleted && (
+                                    <div className={styles.projectWrapper} style={{position: 'relative', minHeight: "100px", marginTop: `calc(100px * ${project.position-1} + 20px)`}}>
+                                      <div className={styles.sprint} onClick={()=>completeProjectAndUpdatePostions(project)} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style={{backgroundColor: project.color, width: `calc(47px * ${project.duration})`}}>
+                                        <div className={styles.sprintTitle}>{project.name}</div>
+                                        <div className={styles.sprintDescription}>
+                                          Level: {project.level}
+                                          - 
+                                          {new Date(project.startDate).getDate()+" "+MonthsArrayWithDays[new Date(project.startDate).getMonth()].month }
+                                          { " to "}
+                                          {new Date(project.endDate).getDate()+" "+MonthsArrayWithDays[new Date(project.endDate).getMonth()].month }
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                  </>
+                              )})}
+                              
+                            </div>
+                          );
+                        })}
+                      </div>
+                    <div className={styles.sprintsCompleted}>
+                        <div className={`${styles.column} ${styles.completed}`}>
+                        </div>
+                        {[...Array(month.days).keys()].map((day, daysIndex) => {
+                          let foundProjectsIndex = 0;
+                            const monthNumber = monthIndex + 1;
+                            const dayNumber = daysIndex + 1;
+                            const date = `${monthNumber}/${dayNumber}/2023`;
+                            let foundProjects = []
+                            // if(date === '8/12/2023'){
+                              // console.log("date", date)
+                              foundProjects = completedProjects.filter((project) =>{
+                                return project.startDate == date
+                              });
+                              if(foundProjects.length > 0){
+                                // foundProjectsIndex += foundProjects.length
+                                // console.log("foundProjects", foundProjects)
+                              }
+                            // }
+
+                            
+                          return (
+                            <div key={daysIndex} className={`${styles.column} ${styles.completed}`}>
+                              {foundProjects.map((project, projectIndex) => {
+
+                                return(
+                                  <>
+                                  {project && project.isCompleted && (
+                                    <div className={styles.projectWrapper} style={{position: 'relative', minHeight: "100px", marginTop: `calc(100px * ${project.position-1} + 20px)`}}>
+                                      <div className={`${styles.sprint} ${styles.completedSprint}`} style={{ width: `calc(47px * ${project.duration})`}}>
+                                        <div className={styles.sprintTitle}>{project.name}</div>
+                                        <div className={styles.sprintDescription}>
+                                          Level: {project.level}
+                                          - 
+                                          {new Date(project.startDate).getDate()+" "+MonthsArrayWithDays[new Date(project.startDate).getMonth()].month }
+                                          { " to "}
+                                          {new Date(project.endDate).getDate()+" "+MonthsArrayWithDays[new Date(project.endDate).getMonth()].month }
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                  </>
+                              )})}
+                              
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+
+          <div className={`${styles.levelsCompletedContainer}`}>
+            { [...Array(10).keys()].map((level, index) => {
+              let isLevelCompleted = false;
+              const foundProjects = projects.find((project) =>{
                 return project.level == level
               });
-              if(foundCompletedProjects){
-                isLevelCompleted = true
-              } 
-            }
+              if(!foundProjects){
+                const foundCompletedProjects = completedProjects.find((project) =>{
+                  return project.level == level
+                });
+                if(foundCompletedProjects){
+                  isLevelCompleted = true
+                } 
+              }
 
-           return(
-            <div className={`${styles.levelCompletedWrapper} ${isLevelCompleted?styles.levelDisplay:"d-none"}`}>
-              <div className={`${styles.levelCompletedTitle}`}>{`Level ${level} Completed`}</div>
-              <Image src="/images/checkGreen.svg" alt="level complete icon" width={24} height={24} />
-            </div>
+            return(
+              <div className={`${styles.levelCompletedWrapper} ${isLevelCompleted?styles.levelDisplay:"d-none"}`}>
+                <div className={`${styles.levelCompletedTitle}`}>{`Level ${level} Completed`}</div>
+                <Image src="/images/checkGreen.svg" alt="level complete icon" width={24} height={24} />
+              </div>
+              )}
             )}
-          )}
 
+          </div>
         </div>
             
       

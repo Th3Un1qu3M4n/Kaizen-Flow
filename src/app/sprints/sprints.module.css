@@ -78,8 +78,8 @@
 
   
 .btnSecondary{
-    background-color: transparent;
-    color: #7F8283;
+    background-color: #FFC24C;
+    color: #000000 !important;
     padding: 2px 16px;
     font-family: "SF Pro Display";
     font-size: 14px;
@@ -88,9 +88,21 @@
     letter-spacing: 0em;
     text-align: center;
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: 8px;
     border: none;
     outline: none;
+    font-family: Space Mono;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
   
   }
 
@@ -340,6 +352,14 @@
     position: relative;
 }
 
+.innerContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items:flex-start;
+    gap: 10px;
+}
+
 .calenderStrip{
     display: flex;
     /* background-color: red; */
@@ -354,18 +374,37 @@
 }
 
 .inprogressImage{
-    position: absolute;
-    top: 25%;
-    left: 0;
+    margin-top: 100px;
+    margin-bottom: 20px;
+    /* position: absolute; */
+    /* top: 11%; */
+    /* left: 0; */
+    /* padding: 5px; */
+    background-color: #F6BE2C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 38vh;
+    width: 30px;
     /* width: 100%; */
     /* height: 100%; */
 
 }
 
 .completedImage{
-    position: absolute;
-    top: 75%;
+    /* position: absolute; */
+    top: 62%;
     left: 0;
+    /* position: absolute;
+    top: 10%;
+    left: 0; */
+    /* padding: 5px; */
+    background-color: #0F4514;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 22vh;
+    width: 30px;
     /* width: 100%; */
     /* height: 100%; */
 
@@ -384,7 +423,14 @@
 }
 
 .month{
-    padding: 10px 30px;
+    padding: 10px 30px 10px 30px;
+    font-family: "Space Mono";
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+
 }
 
 .daysWrapper{
@@ -393,10 +439,12 @@
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
-    padding: 5px;
+    padding: 5px 10px;
     background-color: #333636;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     margin-right: 5px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
 }
 
 .sprintsPending{
@@ -420,7 +468,7 @@
 }
 
 .day{
-    width: 35px;
+    width: 25px;
     height: 35px;
     display: flex;
     flex-direction: column;
@@ -431,25 +479,31 @@
 }
 
 .day.activeDate{
-    background-color: #7A00F3;
+    width: 30px;
+    height: 30px;
+    background-color: #F6BE2C;
+    color: #131313;
     border-radius: 50%;
     /* padding: 5px; */
 }
 
 .column{
-    width: 35px;
+    width: 25px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
-    border-right: #292A2A 1px solid;
+    
     /* background-color: Red; */
     height: 100% !important;
     min-height: 40vh;
     
     /* position: relative; */
 }
-
+.column:nth-child(5n){
+    /* background-color: red; */
+    border-right: #292A2A 1px solid;
+}
 .completed.completed{
     min-height: 25vh;
 }
@@ -459,7 +513,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
-    background-color: #222424;
+    /* background-color: #222424; */
     /* background-color: green; */
     gap: 10px;
     width: 100%;
@@ -489,8 +543,9 @@
 }
 
 .sprint.completedSprint{
-    background-color: transparent;
-    border: 1px solid #1C8102;
+    /* background-color: transparent; */
+    /* border: 1px solid #1C8102; */
+    background: #0F4514;
 }
 
 .levelsCompletedContainer{
